@@ -38,27 +38,50 @@ public class SpellCheck {
 
         // Binary Search
         LinkedList<String> misspelledWords = new LinkedList<>();
+
+        // Go through each word in the text
         for (String word : text) {
+
+            // Reset boundaries for binary search
             int low = 0;
             int high = dictionary.length - 1;
             boolean found = false;
+
             while (low <= high) {
+
+                // Find the middle index of the range
                 int mid = low + (high - low) / 2;
+
+                // Find the word at the middle index
                 String midWord = dictionary[mid];
+
+                // Compare dictionary word to selected word from text
                 int comparison = midWord.compareTo(word);
+
+                // Word found in dictionary
                 if (comparison == 0) {
                     found = true;
                     break;
-                } else if (comparison < 0) {
+                }
+
+                // Midpoint comes alphabetically before the word, so restrict the lower half
+                else if (comparison < 0) {
                     low = mid + 1;
-                } else {
+                }
+
+                // Midpoint comes alphabetically after the word, so restrict the higher half
+                else {
                     high = mid - 1;
                 }
             }
+
+            // If the word isn't found in the dictionary, add it to the list of misspelled words
             if (!found) {
                 misspelledWords.add(word);
             }
         }
+
+        // Return the misspelled words
         System.out.println(misspelledWords);
         return misspelledWords.toArray(new String[0]);
     }
