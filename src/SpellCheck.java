@@ -47,6 +47,7 @@ public class SpellCheck {
             int high = dictionary.length - 1;
             boolean found = false;
 
+            // While the word range is not 0
             while (low <= high) {
 
                 // Find the middle index of the range
@@ -76,7 +77,7 @@ public class SpellCheck {
             }
 
             // If the word isn't found in the dictionary, add it to the list of misspelled words
-            if (!found) {
+            if (!found & !misspelledWords.contains(word)) {
                 misspelledWords.add(word);
             }
         }
