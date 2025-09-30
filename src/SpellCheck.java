@@ -16,7 +16,8 @@ public class SpellCheck {
     public String[] checkWords(String[] text, String[] dictionary) {
 
         // Binary Search
-        LinkedList<String> misspelledWords = new LinkedList<>();
+        ArrayList<String> misspelledWords = new ArrayList<>();
+        ArrayList<String> sortedMisspelledWords = new ArrayList<>();
 
         // Go through each word in the text
         for (String word : text) {
@@ -55,32 +56,17 @@ public class SpellCheck {
                 }
             }
 
-            // If the word isn't found in the dictionary, add it to the list of misspelled words
-            if (!found & !misspelledWords.contains(word)) {
-                misspelledWords.add(word);
-            }
-            for (String misspelledWord : misspelledWords) {
-                int low2 = 0;
-                int high2 = misspelledWords.size() - 1;
-                boolean found2 = false;
-                while (low2 < high2) {
-                    int mid2 = low2 + (high2 - low2) / 2;
-                    String midword2 = misspelledWords.get(mid2);
-                    int comparison2 = midword2.compareTo(misspelledWord);
-                    if (comparison2 == 0) {
-                        found2 = true;
-                        break;
-                    }
-                    else if (comparison2 < 0) {
-                        low2 = mid2 + 1;
-                    }
-                    else {
-                        high2 = mid2 - 1;
-                    }
+            // Binary search to duplicate check
+            if (!found) {
+                int index = Collections.binarySearch(sortedMisspelledWords, word);
+
+                // Not found
+                if (index < 0) {
+                    misspelledWords.add(word);
+                    sortedMisspelledWords.add(-index - 1, word);
                 }
-                if (found2 = true) {
-                    misspelledWords.remove(misspelledWord);
-                }
+
+                // Otherwise it is already present
             }
         }
 
