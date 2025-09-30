@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -15,58 +14,24 @@ public class SpellCheck {
     // Checks spelling of words in a given text
     public String[] checkWords(String[] text, String[] dictionary) {
 
-        // Binary Search
+        // 2 Arrays: Ordered and Sorted
         ArrayList<String> misspelledWords = new ArrayList<>();
         ArrayList<String> sortedMisspelledWords = new ArrayList<>();
 
         // Go through each word in the text
         for (String word : text) {
 
-            // Reset boundaries for binary search
-            int low = 0;
-            int high = dictionary.length - 1;
-            boolean found = false;
+            // Binary Search - Word is not in the dictionary
+            if (Arrays.binarySearch(dictionary, word) < 0) {
 
-            // While the word range is not 0
-            while (low <= high) {
-
-                // Find the middle index of the range
-                int mid = low + (high - low) / 2;
-
-                // Find the word at the middle index
-                String midWord = dictionary[mid];
-
-                // Compare dictionary word to selected word from text
-                int comparison = midWord.compareTo(word);
-
-                // Word found in dictionary
-                if (comparison == 0) {
-                    found = true;
-                    break;
-                }
-
-                // Midpoint comes alphabetically before the word, so restrict the lower half
-                else if (comparison < 0) {
-                    low = mid + 1;
-                }
-
-                // Midpoint comes alphabetically after the word, so restrict the higher half
-                else {
-                    high = mid - 1;
-                }
-            }
-
-            // Binary search to duplicate check
-            if (!found) {
+                // Binary Search - Word is not in misspelled words
                 int index = Collections.binarySearch(sortedMisspelledWords, word);
-
-                // Not found
                 if (index < 0) {
+
+                    // Add to Ordered and Sorted
                     misspelledWords.add(word);
                     sortedMisspelledWords.add(-index - 1, word);
                 }
-
-                // Otherwise it is already present
             }
         }
 
