@@ -15,27 +15,6 @@ public class SpellCheck {
     // Checks spelling of words in a given text
     public String[] checkWords(String[] text, String[] dictionary) {
 
-//        // Create a hashset containing every word in the dictionary
-//        HashSet<String> dictionaryWords = new HashSet<>();
-//
-//        // Create an ordered hashset of every misspelled words in the text
-//        LinkedHashSet<String> misspelledWords = new LinkedHashSet<>();
-//
-//        // For each word in the dictionary, add it to dictionaryWords
-//        dictionaryWords.addAll(Arrays.asList(dictionary));
-//
-//        // For each word in the text if it's not in the list of words
-//        // in the dictionary, then add it to misspelled words
-//        for (String word : text) {
-//            if (!dictionaryWords.contains(word)) {
-//                misspelledWords.add(word);
-//            }
-//        }
-//
-//        // Return the array form of the misspelled words
-//        System.out.println(misspelledWords);
-//        return misspelledWords.toArray(new String[0]);
-
         // Binary Search
         LinkedList<String> misspelledWords = new LinkedList<>();
 
@@ -79,6 +58,29 @@ public class SpellCheck {
             // If the word isn't found in the dictionary, add it to the list of misspelled words
             if (!found & !misspelledWords.contains(word)) {
                 misspelledWords.add(word);
+            }
+            for (String misspelledWord : misspelledWords) {
+                int low2 = 0;
+                int high2 = misspelledWords.size() - 1;
+                boolean found2 = false;
+                while (low2 < high2) {
+                    int mid2 = low2 + (high2 - low2) / 2;
+                    String midword2 = misspelledWords.get(mid2);
+                    int comparison2 = midword2.compareTo(misspelledWord);
+                    if (comparison2 == 0) {
+                        found2 = true;
+                        break;
+                    }
+                    else if (comparison2 < 0) {
+                        low2 = mid2 + 1;
+                    }
+                    else {
+                        high2 = mid2 - 1;
+                    }
+                }
+                if (found2 = true) {
+                    misspelledWords.remove(misspelledWord);
+                }
             }
         }
 
