@@ -182,6 +182,7 @@ public class SpellCheck {
         // Character in the word at a depth
         char currentChar = word.charAt(depth);
 
+        // Less = Left, More = Right, Otherwise go straight down
         if (currentChar < node.character) {
             return get(node.left, word, depth);
         } else if (currentChar > node.character) {
@@ -209,17 +210,25 @@ public class SpellCheck {
 
         misspelledRoot = null;
 
+        // Ordered list of misspelled words
         ArrayList<String> misspelledWords = new ArrayList<>();
 
         for (String word : text) {
+
+            // If not in dictionary
             if (!dictionaryLookup(word)) {
+
+                // If not in misspelled words already
                 if (!misspelledLookup(word)) {
+
+                    // Add it
                     misspelledInsert(word);
                     misspelledWords.add(word);
                 }
             }
         }
 
+        // Return misspelled words list
         System.out.println(misspelledWords);
         return misspelledWords.toArray(new String[0]);
 
