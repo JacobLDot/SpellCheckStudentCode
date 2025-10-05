@@ -1,6 +1,4 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Spell Check
@@ -116,12 +114,18 @@ public class SpellCheck {
     }
 
     // Set a root of the TST
-    private TSTNode root;
+    private TSTNode dictionaryRoot;
+    private TSTNode misspelledRoot;
 
     // Insert a word into the TST
-    public void insert(String word) {
-        root = insert(root, word, 0);
+    public void dictionaryInsert(String word) {
+        dictionaryRoot = insert(dictionaryRoot, word, 0);
     }
+
+    public void misspelledInsert(String word) {
+        misspelledRoot = insert(misspelledRoot, word, 0);
+    }
+
 
     private TSTNode insert(TSTNode node, String word, int depth) {
         char currentChar = word.charAt(depth);
@@ -152,10 +156,19 @@ public class SpellCheck {
     }
 
     // Look up a word in the TST
-    public boolean lookup(String word) {
+    public boolean dictionaryLookup(String word) {
 
         // Start at the root and try to find the node from the last character of the word
-        TSTNode node = get(root, word, 0);
+        TSTNode node = get(dictionaryRoot, word, 0);
+
+        // We have found the node & is the end of the word
+        return node != null && node.isEndOfWord;
+    }
+
+    public boolean misspelledLookup(String word) {
+
+        // Start at the root and try to find the node from the last character of the word
+        TSTNode node = get(misspelledRoot, word, 0);
 
         // We have found the node & is the end of the word
         return node != null && node.isEndOfWord;
@@ -191,14 +204,17 @@ public class SpellCheck {
 
         // TST
         for (String word : dictionary) {
-            insert(word);
+            dictionaryInsert(word);
         }
+
+        misspelledRoot = null;
 
         ArrayList<String> misspelledWords = new ArrayList<>();
 
         for (String word : text) {
-            if (!lookup(word)) {
-                if (!misspelledWords.contains(word)) {
+            if (!dictionaryLookup(word)) {
+                if (!misspelledLookup(word)) {
+                    misspelledInsert(word);
                     misspelledWords.add(word);
                 }
             }
