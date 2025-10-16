@@ -12,8 +12,6 @@ public class TST {
             dictionaryRoot = insert(dictionaryRoot, word, 0);
         }
 
-        misspelledRoot = null;
-
         // Ordered list of misspelled words
         ArrayList<String> misspelledWords = new ArrayList<>();
 
